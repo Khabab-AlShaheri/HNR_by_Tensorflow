@@ -1,0 +1,109 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow.keras.models import load_model
+import tkinter as tk
+from tkinter import Label, Frame, Button, Canvas
+import pyautogui
+
+model_loading = load_model('digit_recognition_modelFinal.h5')
+class DigitDrawingApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("تنبؤ الأرقام المكتوبة بخط اليد")
+        self.root.geometry("700x800")  # تكبير حجم النافذة
+
+        # إطار علوي للرسم
+        self.upper_frame = Frame(root)
+        self.upper_frame.pack(side='top', fill='both', expand=True)
+
+        # إنشاء منطقة للرسم
+        self.canvas = Canvas(self.upper_frame, width=400, height=400, bg='white')
+        self.canvas.pack(pady=20)
+
+        # متغيرات للرسم
+        self.canvas.bind("<B1-Motion>", self.draw)
+        self.canvas.bind("<ButtonPress-1>", self.start_draw)
+        
+        # الأزرار
+        self.button_frame = Frame(self.upper_frame)
+        self.button_frame.pack(side='bottom', fill='x')
+
+        # زر عرض التنبؤ
+        show_button = Button(self.button_frame, text="عرض التنبؤ", command=self.predict_drawing, font=("Helvetica", 24), bg='green', fg='white')
+        show_button.pack(side='left', padx=20, pady=10)
+
+        # زر مسح الرسم
+        clear_button = Button(self.button_frame, text="مسح الرسم", command=self.clear_canvas, font=("Helvetica", 24), bg='red', fg='white')
+        clear_button.pack(side='left', padx=20, pady=10)
+
+        # إطار سفلي لعرض النتيجة
+        self.lower_frame = Frame(root)
+        self.lower_frame.pack(side='bottom', fill='both', expand=True)
+
+        # متغيرات للرسم
+        self.old_x = None
+        self.old_y = None
+
+    def start_draw(self, event):
+        self.old_x = event.x
+        self.old_y = event.y
+
+    def draw(self, event):
+        # رسم خط مستمر
+        if self.old_x is not None and self.old_y is not None:
+            self.canvas.create_line(self.old_x, self.old_y, event.x, event.y,
+                                    width=15, fill='black',
+                                    capstyle=tk.ROUND, smooth=tk.TRUE)
+        self.old_x = event.x
+        self.old_y = event.y
+
+    def predict_drawing(self):
+        # التقاط الرسم وتحويله للتنبؤ
+        x = self.root.winfo_rootx() + self.canvas.winfo_x()
+        y = self.root.winfo_rooty() + self.canvas.winfo_y()
+        x1 = x + self.canvas.winfo_width()
+        y1 = y + self.canvas.winfo_height()
+
+        # التقاط الصورة
+        screenshot = pyautogui.screenshot(region=(x, y, x1 - x, y1 - y))
+        screenshot = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2GRAY)
+
+        # معالجة الصورة للتنبؤ
+        resized_image = cv2.resize(screenshot, (28, 28), interpolation=cv2.INTER_AREA)
+        inverted_image = 255 - resized_image
+        normalized_image = inverted_image / 255.0
+
+        # التنبؤ
+        input_image = normalized_image.reshape((1, 28, 28, 1))
+        prediction = model_loading.predict(input_image)
+        predicted_digit = np.argmax(prediction)
+        confidence = np.max(prediction)  # مستوى الثقة
+
+        # مسح الإطار السفلي
+        for widget in self.lower_frame.winfo_children():
+            widget.destroy()
+
+        # عرض النتيجة
+        prediction_label = Label(self.lower_frame,
+                                 text=f'الرقم المتوقع: {predicted_digit}\n'
+                                      f'مستوى الثقة: {confidence * 100:.2f}%',
+                                 font=("Helvetica", 36))  # تكبير حجم الخط
+        prediction_label.pack(pady=20)
+
+    def clear_canvas(self):
+        # مسح القماش
+        self.canvas.delete('all')
+        
+        # إعادة تعيين متغيرات الرسم
+        self.old_x = None
+        self.old_y = None
+        
+        # مسح الإطار السفلي
+        for widget in self.lower_frame.winfo_children():
+            widget.destroy()
+
+# إنشاء النافذة الرئيسية
+root = tk.Tk()
+app = DigitDrawingApp(root)
+root.mainloop()
