@@ -1,2 +1,4 @@
 tensorflow>=2.19.0
+pillow>=10.4.0
+pywin32>=306
 numpy>=2.0.2
