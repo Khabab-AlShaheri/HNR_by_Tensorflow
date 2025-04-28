@@ -8,13 +8,16 @@
 
 **هذه هي إصدارات الحزمة التي تم تطوير الكود واختبارها عليها ، وقد تعمل مع الإصدارات السابقة.**
 
-**python \>= 3.12.5**
 
-**pillow \>= 10.4.0**
+      python \>= 3.12.5
+      
+      pillow \>= 10.4.0
+      
+      tensorflow \>= 2.19.0
+      
+      numpy \>= 2.0.2
 
-**tensorflow \>= 2.19.0**
 
-**numpy \>= 2.0.2**
 
 **وصف المشروع:**
 
@@ -30,66 +33,75 @@
 
 **تعليمات الاستخدام :**
 
-1.  **إنشاء مجلد جديد**
--   **>mkdir namefolder**
--   **>cd namefolder**
-2.  **تنزيل المشروع :**
--   **>git clone** [**https://github.com/Khabab-AlShaheri/HNR_by_Tensorflow.git**](https://github.com/Khabab-AlShaheri/HNR_by_Tensorflow.git)
--   **>cd HNR_by_Tensorflow**
+  **1.فتح موجهة الاوامر و إنشاء مجلد جديد**
 
-    **3 . إعداد البيئة الافتراضية (اختياري ولكن موصى به)**
+         mkdir namefolder
+         cd namefolder
 
--   **>python -m venv venv**
--   **>venv/Scripts/activate.bat** على نظام تشغيل الويندوز \#
--   **>source venv/bin/activate على نظام تشغيل لينكس او ماك \#**
+   **2.تنزيل المشروع :**
+    
+    
+         git clone https://github.com/Khabab-AlShaheri/HNR_by_Tensorflow.git
+   **3.الدخول الى مجلد المشروع**
+         
+         cd HNR_by_Tensorflow
+      
 
-    **4 . تثبيت المتطلبات**
+  **4.إعداد البيئة الافتراضية (اختياري ولكن موصى به)**
 
-    **سيتم تثبيت جميع الحزم اللازمة لتشغيل المشروع  .​**
 
--   **>pip install -r requirements.txt**
+         python -m venv name_venv
+         name_venv/Scripts/activate.bat على نظام تشغيل الويندوز \#
+         source name_venv/bin/activate على نظام تشغيل لينكس او ماك \#
+  
 
-    **5 . تدريب النموذج**
+   **5. تثبيت المتطلبات**
 
-    **. لتدريب النموذج، يمكنك استخدام Jupyter Notebook أو تشغيل السكربت مباشرة.**
+   سيتم تثبيت جميع الحزم اللازمة لتشغيل المشروع  .​
 
-    **ثم افتح الملف  train_model.ipynb  وابدا في التنفيذ .**
+     pip install -r requirements.txt
 
-    **تشغيل السكربت مباشرة**
+   **6. تدريب النموذج**
 
--   **>python train_model.py**
+  لتدريب النموذج، يمكنك استخدام Jupyter Notebook أو تشغيل السكربت مباشرة.
 
-    **6 . استخدام النموذج المدرب**
+ ثم افتح الملف  train_model.ipynb  وابدا في التنفيذ .
 
--   **>Cd app**
--   **>python recognizer_app.py**
+ تشغيل السكربت مباشرة
 
-    **هيكل المشروع :**
+       python train_model.py
 
-    **:.**
+   **7. استخدام النموذج المدرب**
 
-    **│ .gitignore     \#Git لتحديد الملفات التي يتم تجاهلها من قبل**
+      cd app
+      python recognizer_app.py
 
-    **│ Dockerfile    \#Docker container ملف إعداد لتشغيل المشروع داخل**
+**هيكل المشروع :**
 
-    **│ recognizer.py    سكربت لتشغيل النموذج على صور جديدة تم استبداله \#**
+    :.
 
-    **│ requirements.txt    قائمة بالحزم المطلوبة للمشروع \#**
+    │ .gitignore     \#Git لتحديد الملفات التي يتم تجاهلها من قبل
 
-    **│ train_model.ipynb    ملف تدريب النموذج \#**
+    │ Dockerfile    \# Docker container ملف إعداد لتشغيل المشروع داخل
 
-    **│**
+    │ recognizer.py    \# سكربت لتشغيل النموذج على صور جديدة تم استبداله 
 
-    **├───app**
+    │ requirements.txt   \# قائمة بالحزم المطلوبة للمشروع 
 
-    **│ recognizer_app.py   سكربت لتشغيل النموذج على صور جديدة \#**
+    │ train_model.ipynb    \#ملف تدريب النموذج \#
 
-    **│**
+    │
 
-    **└───model     \# يحتوي على ملفات النماذج المدربة أو ملفات الحفظ**
+    ├───app
 
-    **best_model.h5**
+    │       recognizer_app.py   \# سكربت لتشغيل النموذج على صور جديدة 
 
-    **final_model.h5**
+    │
 
-    **mnist_model.h5**
+    └───model     \# يحتوي على ملفات النماذج المدربة أو ملفات الحفظ
+
+          best_model.h5
+      
+          final_model.h5
+      
+          mnist_model.h5
