@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Flowchart</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+  </head>
+  <body>
+    <h1>Mermaid Flowchart for Application</h1>
+    <pre class="mermaid">
+      flowchart TD
+          A[Start Application] --> B[Load Model]
+          B --> C[Initialize App Class]
+          C --> D[Set Default Colors and Brush Size]
+          D --> E[Create Canvas and UI Elements]
+          E --> F[Bind Paint Event to Canvas]
+          F --> G[Main Loop]
+
+          subgraph Paint Functionality
+              F --> H[User Draws on Canvas]
+              H --> I[Draw Oval on Canvas]
+              I --> J[Update ImageDraw Object]
+          end
+
+          subgraph Clear Canvas
+              E --> K[Clear Button Clicked]
+              K --> L[Delete All Canvas Content]
+          end
+
+          subgraph Predict Digit
+              E --> M[Recognise Button Clicked]
+              M --> N[Capture Canvas as Image]
+              N --> O[Resize Image to 32x32]
+              O --> P[Convert Image to Grayscale]
+              P --> Q[Normalize Image Data]
+              Q --> R[Predict Using Model]
+              R --> S[Display Prediction and Confidence]
+          end
+    </pre>
+  </body>
+</html>
